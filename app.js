@@ -100,3 +100,14 @@ function calculateCost(obj){
   costDiv.innerHTML = fare+tax;
 
 }
+
+document.getElementById("search-btn").addEventListener("click", function(){
+  const values = document.getElementById("search-value").value;
+  for(let i=0; i<serviceArray.length; i++){
+    if(values.toLowerCase() == serviceArray[i].vehicle.toLowerCase()){
+        document.getElementById("main-section").innerHTML="";
+        displayServices(serviceArray[i]);
+        return;
+    }
+  }
+});
