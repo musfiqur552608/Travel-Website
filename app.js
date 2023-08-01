@@ -20,12 +20,12 @@ var busObject = {
     description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem porro tempore quas, et a atque sed libero fugit aliquid pariatur."
 };
 
-function displayServices(service){
-    const mainSection = document.getElementById("main-section")
+function displayServices(service) {
+    const mainSection = document.getElementById("main-section");
+    const stringified = JSON.stringify(service);
+    const div = document.createElement("div");
 
-    const div = document.createElement("div")
-
-    div.innerHTML=`
+    div.innerHTML = `
     
     <div class="card mt-3 mx-auto" style="max-width: 800px;">
             <div class="row g-0">
@@ -37,6 +37,9 @@ function displayServices(service){
                   <h5 class="card-title">Transport Mood ${service.vehicle}</h5>
                   <p class="card-text">${service.description}</p>
                   <p class="card-text"><small class="text-body-secondary">Fare per kilo: ${service.farePerKilo}</small>  <small class="text-body-secondary">Capacity: ${service.capacity}</small></p>
+                  <button type="button" onclick='handleBooking(${stringified})' class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Launch demo modal
+                    </button>
                 </div>
               </div>
             </div>
@@ -49,3 +52,19 @@ function displayServices(service){
 displayServices(carObject)
 displayServices(busObject)
 displayServices(bikeObject)
+
+function handleBooking(obj){
+  const modalBody = document.getElementById("modal-body");
+  modalBody.innerHTML = `
+  
+    <div class="card" style="width: 18rem;">
+      <img src="${obj.imageUrl}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Vehicle Mood: ${obj.vehicle}</h5>
+        <p class="card-text">${obj.description}</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+    </div>
+
+  `
+}
