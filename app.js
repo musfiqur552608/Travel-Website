@@ -20,6 +20,8 @@ var busObject = {
     description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem porro tempore quas, et a atque sed libero fugit aliquid pariatur."
 };
 
+const serviceArray = [bikeObject, carObject, busObject];
+
 function displayServices(service) {
     const mainSection = document.getElementById("main-section");
     const stringified = JSON.stringify(service);
@@ -49,12 +51,17 @@ function displayServices(service) {
     mainSection.appendChild(div)
 }
 
-displayServices(carObject)
-displayServices(busObject)
-displayServices(bikeObject)
+function displayServicesArray(arr){
+  for(let i = 0; i< arr.length; i++){
+    displayServices(arr[i]);
+  }
+}
+
+displayServicesArray(serviceArray);
 
 function handleBooking(obj){
   const modalBody = document.getElementById("modal-body");
+  const stringified = JSON.stringify(obj)
   modalBody.innerHTML = `
   
     <div class="card" style="width: 18rem;">
@@ -62,9 +69,34 @@ function handleBooking(obj){
       <div class="card-body">
         <h5 class="card-title">Vehicle Mood: ${obj.vehicle}</h5>
         <p class="card-text">${obj.description}</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+        <p class="card-text"><small class="text-body-secondary">Fare per kilo: ${obj.farePerKilo}</small>  <small class="text-body-secondary">Capacity: ${obj.capacity}</small></p>
+        <p>Fare: <small class="text-muted" id="fare"></small></p>
+        <p>Tax: <small class="text-muted" id="tax"></small></p>
+        <p>Total-cost: <small class="text-muted" id="total-cost"></small></p>
+        <div class="d-flex flex-column" role="search">
+                    <input class="form-control m-2" type="number" id="distance-input" placeholder="How many kilo?" aria-label="Search">
+                    <input class="form-control m-2" type="number" id="quantity-input" placeholder="How many car?" aria-label="Search">
+                    <button class="btn btn-outline-success" id="search-btn"onclick='calculateCost(${stringified})' area-label="Search" type="submit">Search</button>
+                </div>
       </div>
     </div>
 
   `
+}
+
+function calculateCost(obj){
+  const quantity = document.getElementById("quantity-input").value;
+  const distance = document.getElementById("distance-input").value;
+
+  const fareDiv = document.getElementById("fare");
+  fare = quantity * distance * obj.farePerKilo;
+  fareDiv.innerHTML = fare;
+
+  const taxDiv = document.getElementById("tax");
+  tax = fare*5/100;
+  taxDiv.innerHTML = tax;
+
+  const costDiv = document.getElementById("total-cost");
+  costDiv.innerHTML = fare+tax;
+
 }
